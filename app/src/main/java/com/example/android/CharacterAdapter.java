@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +48,12 @@ public class CharacterAdapter extends ArrayAdapter<character> {
         }
         TextView charName = (TextView) convertView.findViewById(R.id.textView);
         final ImageView charImage = (ImageView) convertView.findViewById(R.id.imageView);
+        ViewGroup.LayoutParams params = charImage.getLayoutParams();
+        int[] size = getScreenSize();
+        params.height = size[0];
+        params.width = size[1];
+
+        charImage.requestLayout();
         charImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//To set custom image
                 MainActivity.currentUserEdit = charImage;
@@ -87,5 +96,21 @@ public class CharacterAdapter extends ArrayAdapter<character> {
         Intent intent = new Intent(context, SeriesActivity.class);
         intent.putExtra("currentCharName", characterName);//So we know what character we are dealing with
         context.startActivity(intent);
+    }
+
+    public int[] getScreenSize() {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        double height = metrics.heightPixels;
+        height = height / 4.6;
+        double width = height * 0.654;
+        int newHeight = (int) Math.round(height);
+        int newWidth = (int) Math.round(width);
+        int[] size = new int[2];
+        size[0] = newHeight;
+        size[1] = newWidth;
+        return size;
     }
 }

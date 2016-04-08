@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,6 +41,11 @@ public class SeriesAdapter extends ArrayAdapter<Series> {
         }
         TextView seriesName = (TextView) convertView.findViewById(R.id.textView);
         final ImageView seriesImage = (ImageView) convertView.findViewById(R.id.imageView);
+        ViewGroup.LayoutParams params = seriesImage.getLayoutParams();
+        int[] size = getScreenSize();
+        params.height = size[0];
+        params.width = size[1];
+        seriesImage.requestLayout();
         seriesImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//To set custom image
                 SeriesActivity.currentUserEdit = seriesImage;
@@ -74,5 +82,21 @@ public class SeriesAdapter extends ArrayAdapter<Series> {
         intent.putExtra("currentSeries", mySeries);
         intent.putExtra("character", SeriesActivity.currentCharacter);//So we know what character we are dealing with
         context.startActivity(intent);
+    }
+
+    public int[] getScreenSize() {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        double height = metrics.heightPixels;
+        height = height / 4.6;
+        double width = height * 0.654;
+        int newHeight = (int) Math.round(height);
+        int newWidth = (int) Math.round(width);
+        int[] size = new int[2];
+        size[0] = newHeight;
+        size[1] = newWidth;
+        return size;
     }
 }
