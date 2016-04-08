@@ -8,9 +8,14 @@ It opens up to all characters the user owns.  Should display character name and 
 The series screen should look similar to the character screen, only it shows Series titles.  Behaves the same as well.  Clicking a series shows a new screen that displays the issue numbers the user has.
 
 Currenlty, it operates like so:
-Everything works, except for the remove function on any view.
+Everything works in character screen. Even added an "Edit" button, incase the user misstyped. Havent added remove/edit functionality for
+other activities yet.
 
 Thoughts:
+After most recent update, wanted to get rid of a chuck of code that was bothering me.  In the 
+MainActivity.java file, in the characterDialog method, I was having an issue where it would sometimes add a duplicated
+character so I just said "if you just added two characters, delete the last one".  I removed that code, but with the expence of
+needing to restart the activity everytime I add a character. Need to debug original code. Figure out what is going on.
 Should use a better structure for saving data.
 Will improve asthetics once it works properly.
 Add sort function for character and series.
@@ -24,3 +29,4 @@ Implement API databases.
 Output a text file that can be sent to an email so the user can print it and take it with them.
 Use a barecode scanner to get information.
 Maybe do away with current strucure, and just have an option to display by Publisher, Character, Series, etc.
+"Wish list" analizes what comics you have, and suggests next in series. EX: "You have Superman 1-12. Recomend Superman 13."
