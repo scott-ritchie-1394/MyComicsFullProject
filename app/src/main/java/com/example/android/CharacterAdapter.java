@@ -58,6 +58,13 @@ public class CharacterAdapter extends ArrayAdapter<character> {
                 nextActivity(getItem(position).getCharacterName());
             }
         });
+        charName.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                MainActivity.remove(position, context);
+                return true;
+            }
+        });
 
         Bitmap bm = myCharacter.getImage();
         if (bm != null) {
