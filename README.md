@@ -13,9 +13,13 @@ Holding the name should prompt the user to delete the character.
 The series screen should look similar to the character screen, only it shows Series titles.  Behaves the same as well.  
 Clicking a series shows a new screen that displays the issue numbers the user has.
 
+
+
 Currenlty, it operates like so:
 Everything works in character screen. Even added an "Edit" button, incase the user misstyped. Havent added remove/edit functionality for
 other activities yet.
+
+
 
 Thoughts:  
 --After most recent update, wanted to get rid of a chuck of code that was bothering me.  In the 
@@ -30,6 +34,8 @@ Should clean up code.  Right now it is ductaped together.
 Currently very "brute forced".  
 Come up with a more astheticaly pleasing way to display issues.  
 Pictures dont scale accross platforms. Currently best on my Galaxy S5.  
+
+
 
 Possible future modifications/new apps:  
 Character pic is just a random series pic which would add variety.  
