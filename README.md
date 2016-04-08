@@ -1,4 +1,10 @@
 # MyComicsFullProject
+  <br />
+*********  
+** In this update:  
+** Pictures now scale accross platforms assuming comic book ratio.  
+*********
+
 An in development, for personal use, comic book database for android.
 
 This is my first app, so try not to judge me or my code too harshly.  Mostly a learning experience.
@@ -33,7 +39,6 @@ Add sort function for character and series.
 Should clean up code.  Right now it is ductaped together.  
 Currently very "brute forced".  
 Come up with a more astheticaly pleasing way to display issues.  
-Pictures dont scale accross platforms. Currently best on my Galaxy S5.  
   <br />
   <br />
   <br />
