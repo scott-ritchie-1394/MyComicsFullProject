@@ -22,8 +22,10 @@ Add sort function for character and series.
 Should clean up code.  Right now it is ductaped together.
 Currently very "brute forced".
 Come up with a more astheticaly pleasing way to display issues.
+Pictures dont scale accross platforms. Currently best on my Galaxy S5.
 
 Possible future modifications/new apps:
+Character pic is just a random series pic which would add variety.
 More information such as publisher.
 Implement API databases.
 Output a text file that can be sent to an email so the user can print it and take it with them.
