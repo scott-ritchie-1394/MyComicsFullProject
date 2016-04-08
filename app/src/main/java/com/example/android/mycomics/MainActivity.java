@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    static String filePath = "";
+    static public String filePath = "";
+    static public String filePathPrime = "";
     static List<character> characters = new ArrayList<>();//Holds our characters
     static CharacterAdapter adapter;
     ListView listView;
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //Gets height using dp
         comicHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
-        filePath = this.getFilesDir().getPath().toString() + "/saveFile.txt";
+        filePathPrime = this.getFilesDir().getPath().toString();
+        filePath = filePathPrime + "/saveFile.txt";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         adapter = new CharacterAdapter(this, characters);
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                File f = new File(filePathPrime + "/" + characters.get(position).getCharacterName() + ".txt");
+                boolean deleted = f.delete();
+                Log.d("HERE", String.valueOf(deleted));
                 adapter.remove(characters.get(position));
                 characters.remove(position);
                 saveCharacters(filePath, myContext);

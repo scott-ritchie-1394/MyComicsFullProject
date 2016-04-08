@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,10 +25,15 @@ import android.widget.Toast;
 
 import com.example.android.mycomics.MainActivity;
 import com.example.android.mycomics.R;
+import com.example.android.mycomics.Series;
 import com.example.android.mycomics.character;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,13 +62,13 @@ public class CharacterAdapter extends ArrayAdapter<character> {
         params.width = size[1];
 
         charImage.requestLayout();
-        charImage.setOnClickListener(new View.OnClickListener() {
+        /*charImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//To set custom image
                 MainActivity.currentUserEdit = charImage;
                 MainActivity.currentSaveCharacter = getItem(position);
                 userSetImage();
             }
-        });
+        });*/
         charName.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//To set custom image
                 //Toast.makeText(getContext(), myCharacter.getCharacterName(), Toast.LENGTH_SHORT).show();
@@ -75,9 +83,23 @@ public class CharacterAdapter extends ArrayAdapter<character> {
             }
         });
 
-        Bitmap bm = myCharacter.getImage();
+        /*Bitmap bm = myCharacter.getImage();
         if (bm != null) {
             charImage.setImageBitmap(bm);
+        } else {
+            charImage.setImageResource(R.drawable.addimage);
+        }*/
+        List<Bitmap> bitmaps = readSeriesImages(myCharacter.getCharacterName());
+        Drawable[] images = new Drawable[bitmaps.size()];
+        if (images.length != 0) {
+            for (int i = 0; i < bitmaps.size(); i++) {
+                images[i] = new BitmapDrawable(bitmaps.get(i));
+        }
+            CyclicTransitionDrawable transitionDrawable = new CyclicTransitionDrawable(images);
+            charImage.setImageDrawable(transitionDrawable);
+            transitionDrawable.startTransition(2000, 5000);
+        } else if (images.length == 1) {
+            charImage.setImageBitmap(bitmaps.get(0));
         } else {
             charImage.setImageResource(R.drawable.addimage);
         }
@@ -112,5 +134,26 @@ public class CharacterAdapter extends ArrayAdapter<character> {
         size[0] = newHeight;
         size[1] = newWidth;
         return size;
+    }
+
+    protected List<Bitmap> readSeriesImages(String character) {//Reads characters array from file
+        List<Bitmap> toReturn = new ArrayList<>();
+        String filePath = "/data/data/com.example.android.mycomics/files/" + character + ".txt";
+        try {
+            File f = new File(filePath);
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            List<Series> series = (List<Series>) in.readObject();
+            in.close();
+            for (int i = 0; i < series.size(); i++) {
+                Bitmap bm = series.get(i).getImage();
+                if (bm != null) {
+                    toReturn.add(bm);
+                }
+            }
+        } catch (Exception e) {
+            
+        }
+        return toReturn;
     }
 }
