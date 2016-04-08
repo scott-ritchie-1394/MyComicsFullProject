@@ -18,10 +18,10 @@ Everything works in character screen. Even added an "Edit" button, incase the us
 other activities yet.
 
 Thoughts:
-After most recent update, wanted to get rid of a chuck of code that was bothering me.  In the 
+--After most recent update, wanted to get rid of a chuck of code that was bothering me.  In the 
 MainActivity.java file, in the characterDialog method, I was having an issue where it would sometimes add a duplicated
 character so I just said "if you just added two characters, delete the last one".  I removed that code, but with the expence of
-needing to restart the activity everytime I add a character. Need to debug original code. Figure out what is going on.  
+needing to restart the activity everytime I add a character. Need to debug original code. Figure out what is going on.--    
 Should use a better structure for saving data.  
 Will improve asthetics once it works properly.  
 Add sort function for character and series.  
