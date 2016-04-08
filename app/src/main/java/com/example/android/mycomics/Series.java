@@ -17,34 +17,38 @@ public class Series implements Serializable {
     private ArrayList<Double> issues = new ArrayList<>();
 
 
-    public Series(String name){
-        seriesName= name;
+    public Series(String name) {
+        seriesName = name;
     }
 
-    public String getSeriesName(){
+    public String getSeriesName() {
         return seriesName;
     }
 
-    public void addIssue(double issue){
+    public void addIssue(double issue) {
         issues.add(issue);
     }
 
-    public ArrayList<Double> getIssueArray(){
+    public ArrayList<Double> getIssueArray() {
         return issues;
     }
-    public Bitmap getImage(){//Returns our image as a bitmap
+
+    public Bitmap getImage() {//Returns our image as a bitmap
         if (byteArray != null) {
             return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        } else {
+            return null;
         }
-        else{return null;}
     }
+
     //Stores bitmap to byteArray.
-    public void setImage(Bitmap b){
+    public void setImage(Bitmap b) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         b.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byteArray = stream.toByteArray();
     }
-    public void sortIssues(){
+
+    public void sortIssues() {
         Collections.sort(issues);
     }
 }

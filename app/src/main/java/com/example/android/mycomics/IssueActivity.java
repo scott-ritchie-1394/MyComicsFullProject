@@ -46,8 +46,8 @@ public class IssueActivity extends AppCompatActivity {
         myListView = (ListView) findViewById(R.id.issueListView);
         readSeries();
         index = -1;
-        for(int i = 0;i<seriesArray.size();i++){
-            if(currentSeries.getSeriesName().equals(seriesArray.get(i).getSeriesName())){
+        for (int i = 0; i < seriesArray.size(); i++) {
+            if (currentSeries.getSeriesName().equals(seriesArray.get(i).getSeriesName())) {
                 index = i;
             }
         }
@@ -87,8 +87,10 @@ public class IssueActivity extends AppCompatActivity {
                 toReturn.add("" + list.get(i));
         }
         stringIssues = toReturn;
-        try{
-        myAdapter.notifyDataSetChanged();}catch(Exception e){}
+        try {
+            myAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+        }
         System.out.println(stringIssues);
     }
 
@@ -98,27 +100,27 @@ public class IssueActivity extends AppCompatActivity {
         txtInput.setInputType(InputType.TYPE_CLASS_NUMBER);
         dialogBuilder.setTitle("Add Issues:");
         dialogBuilder.setView(txtInput);
-        dialogBuilder.setPositiveButton("Done",null);
+        dialogBuilder.setPositiveButton("Done", null);
         dialogBuilder.setNeutralButton("Add", null);
 
         final AlertDialog dialogCharacterName = dialogBuilder.create();
-        dialogCharacterName.setOnShowListener(new DialogInterface.OnShowListener(){
+        dialogCharacterName.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onShow(DialogInterface dialog){
+            public void onShow(DialogInterface dialog) {
                 Button add = dialogCharacterName.getButton(AlertDialog.BUTTON_NEUTRAL);
                 Button done = dialogCharacterName.getButton(AlertDialog.BUTTON_POSITIVE);
-                add.setOnClickListener(new View.OnClickListener(){
+                add.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view){
+                    public void onClick(View view) {
                         //doubleIssues.add(Double.valueOf(txtInput.getText().toString()));
                         seriesArray.get(index).addIssue(Double.valueOf(txtInput.getText().toString()));
                         combineIssueRuns(doubleIssues);
                         txtInput.setText("");
                     }
                 });
-                done.setOnClickListener(new View.OnClickListener(){
+                done.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view){
+                    public void onClick(View view) {
                         myAdapter.clear();
                         Collections.sort(doubleIssues);
                         combineIssueRuns(doubleIssues);
@@ -132,22 +134,24 @@ public class IssueActivity extends AppCompatActivity {
         });
         dialogCharacterName.show();
     }
-    public void saveIssues(){
+
+    public void saveIssues() {
         String filePath = this.getFilesDir().getPath().toString() + "/" + currentCharacter + ".txt";
         File f = new File(filePath);
         FileOutputStream fos = null;
         ObjectOutputStream out = null;
-        try{
+        try {
             fos = new FileOutputStream(f);
             out = new ObjectOutputStream(fos);
             out.writeObject(seriesArray);
             out.close();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Toast.makeText(IssueActivity.this,
                     "SAVEERROR", Toast.LENGTH_LONG).show();
-            Log.d("SAVEERROR", e.toString());}
+            Log.d("SAVEERROR", e.toString());
+        }
     }
+
     protected void readSeries() {//Reads characters array from file
         try {
             String filePath = this.getFilesDir().getPath().toString() + "/" + currentCharacter + ".txt";
@@ -156,12 +160,13 @@ public class IssueActivity extends AppCompatActivity {
             ObjectInputStream in = new ObjectInputStream(fis);
             seriesArray = (List<Series>) in.readObject();
             in.close();
+        } catch (Exception e) {
         }
-        catch(Exception e){}
     }
-    public void goBack(View v){
+
+    public void goBack(View v) {
         Intent intent = new Intent(this, SeriesActivity.class);
-        intent.putExtra("currentCharName",currentCharacter);//So we know what character we are dealing with
+        intent.putExtra("currentCharName", currentCharacter);//So we know what character we are dealing with
         this.startActivity(intent);
     }
 }

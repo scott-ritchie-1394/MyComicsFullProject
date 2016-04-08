@@ -6,7 +6,8 @@
     android:padding="10dp"
     android:orientation="vertical"
     tools:context="com.example.android.mycomics.AddCharacter">
-    <TextView
+
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
