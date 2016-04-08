@@ -24,11 +24,11 @@ Currently very "brute forced".
 Come up with a more astheticaly pleasing way to display issues.
 Pictures dont scale accross platforms. Currently best on my Galaxy S5.
 
-Possible future modifications/new apps: 
-Character pic is just a random series pic which would add variety. 
-More information such as publisher. 
-Implement API databases. 
-Output a text file that can be sent to an email so the user can print it and take it with them. 
-Use a barecode scanner to get information. 
-Maybe do away with current strucure, and just have an option to display by Publisher, Character, Series, etc. 
-"Wish list" analizes what comics you have, and suggests next in series. EX: "You have Superman 1-12. Recomend Superman 13." 
+Possible future modifications/new apps:  
+Character pic is just a random series pic which would add variety.  
+More information such as publisher.  
+Implement API databases.  
+Output a text file that can be sent to an email so the user can print it and take it with them.  
+Use a barecode scanner to get information.  
+Maybe do away with current strucure, and just have an option to display by Publisher, Character, Series, etc.  
+"Wish list" analizes what comics you have, and suggests next in series. EX: "You have Superman 1-12. Recomend Superman 13."  
