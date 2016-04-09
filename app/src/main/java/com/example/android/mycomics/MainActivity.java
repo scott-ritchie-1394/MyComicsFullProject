@@ -1,69 +1,68 @@
 package com.example.android.mycomics;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.android.CharacterAdapter;
-import com.example.android.SeriesActivity;
+import com.example.android.CharacterAdapterRecycler;
+import com.example.android.ComicUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    static String filePath = "";
-    static List<character> characters = new ArrayList<>();//Holds our characters
-    static CharacterAdapter adapter;
-    ListView listView;
+public class MainActivity extends AppCompatActivity implements CharacterAdapterRecycler.CharacterCallback {
+    static public String filePath = "";
+    static public String filePathPrime = "";
+    static CharacterAdapterRecycler adapter;
+    RecyclerView listView;
     public static ImageView currentUserEdit;
-    public static character currentSaveCharacter;
+    public static ComicCharacter currentSaveComicCharacter;
 
     Context context = this;
-    String nextDisplayName = "";//Used to hold String for new character as input by user
+    String nextDisplayName = "";//Used to hold String for new ComicCharacter as input by user
     int comicHeightInPx;//For dp conversion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Gets height using dp
         comicHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
-        filePath = this.getFilesDir().getPath().toString() + "/saveFile.txt";
+        filePathPrime = this.getFilesDir().getPath().toString();
+        filePath = filePathPrime + "/saveFile.txt";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adapter = new CharacterAdapter(this, characters);
-        listView = (ListView) findViewById(R.id.listView);
+        adapter = new CharacterAdapterRecycler(this);
+        listView = (RecyclerView) findViewById(R.id.listView);
+        listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(adapter);
         try {
-            readCharacters();//Should build our array of Characters from file.
+            ComicUtils.readCharacters(filePath, adapter);//Should build our array of Characters from file.
         } catch (Exception e) {
             Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
             Log.d("READ ERROR", e.toString());
         }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
     }
 
-    //Creates dialoge for adding a character
+    //Creates dialoge for adding a ComicCharacter
     public void characterDialog(View view) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final EditText txtInput = new EditText(this);
@@ -72,30 +71,22 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int firstSize = characters.size();
-                nextDisplayName = txtInput.getText().toString();//Gets name of character to add
-                //Next three lines update variables and saves them.
-                character toAdd = new character(nextDisplayName);
-                //adapter.add(toAdd);
-                characters.add(toAdd);
-                adapter.notifyDataSetChanged();
-                //adapter.add(characters.get(characters.size() - 1));
-                /*if (characters.size() > firstSize + 1) {
-                    characters.remove(characters.size() - 1);
-                }*/
-                saveCharacters(filePath, context);
-                restartActivity();
+                int firstSize = adapter.size();
+                nextDisplayName = txtInput.getText().toString();
+                ComicCharacter toAdd = new ComicCharacter(nextDisplayName);
+                adapter.add(toAdd);
+                ComicUtils.saveCharacters(filePath, context, adapter);
             }
         });
         AlertDialog dialogCharacterName = dialogBuilder.create();
         dialogCharacterName.show();
     }
 
-    public static void remove(int myPosition, final Context fromCallContext) {
-        if (characters.size() == 0) {
+    public static void remove(final ComicCharacter comicCharacter, final Context fromCallContext) {
+        if (adapter.size() == 0) {
             return;
         }
-        final int position = myPosition;
+
         final Context myContext = fromCallContext;
         boolean test = false;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(myContext);
@@ -103,9 +94,15 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                adapter.remove(characters.get(position));
-                characters.remove(position);
-                saveCharacters(filePath, myContext);
+                try {
+                    File f = new File(filePathPrime + "/" + comicCharacter.getCharacterName() + ".txt");
+                    boolean deleted = f.delete();
+                    Log.d("HERE", String.valueOf(deleted));
+                    adapter.removeItem(comicCharacter);
+                    ComicUtils.saveCharacters(filePath, myContext, adapter);
+                } catch (Exception e) {
+                    Log.d("ERRROR", e.toString());
+                }
             }
         });
         dialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -117,47 +114,29 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setNeutralButton("Edit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                editName(position, myContext);
+                editName(comicCharacter, myContext);
             }
         });
         AlertDialog dialogCharacterName = dialogBuilder.create();
         dialogCharacterName.show();
     }
 
-    public static void editName(int myPosition, Context fromCallContext) {
+    public static void editName(final ComicCharacter comicCharacter, Context fromCallContext) {
         final Context myContext = fromCallContext;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(myContext);
         final EditText txtInput = new EditText(myContext);
-        final int position = myPosition;
-        dialogBuilder.setTitle("New Character Name:");
+        dialogBuilder.setTitle("New ComicCharacter Name:");
         dialogBuilder.setView(txtInput);
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Next three lines update variables and saves them.
-                characters.get(position).setCharacterName(txtInput.getText().toString());
-                adapter.notifyDataSetChanged();
-                saveCharacters(filePath, myContext);
+                comicCharacter.setCharacterName(txtInput.getText().toString());
+                ComicUtils.saveCharacters(filePath, myContext, adapter);
             }
         });
         AlertDialog dialogCharacterName = dialogBuilder.create();
         dialogCharacterName.show();
-    }
-
-    private static void saveCharacters(String globalFilePath, Context context) {//Writes our characters array to file using serializable.
-        File f = new File(globalFilePath);
-        FileOutputStream fos = null;
-        ObjectOutputStream out = null;
-        try {
-            fos = new FileOutputStream(f);
-            out = new ObjectOutputStream(fos);
-            out.writeObject(characters);
-            out.close();
-        } catch (Exception e) {
-            Toast.makeText(context,
-                    "SAVEERROR", Toast.LENGTH_LONG).show();
-            Log.d("SAVEERROR", e.toString());
-        }
     }
 
     //Sets image and saves it
@@ -171,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
                 Uri imageLocation = returnedIntent.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageLocation);
                 Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                selectedImage = getResizedBitmap(selectedImage, 1080 / 4, 1920 / 4);
+                selectedImage = ComicUtils.getResizedBitmap(selectedImage, 1080 / 4, 1920 / 4);
                 currentUserEdit.setImageBitmap(selectedImage);
-                currentSaveCharacter.setImage(selectedImage);
-                saveCharacters(filePath, context);
+                currentSaveComicCharacter.setImage(selectedImage);
+                ComicUtils.saveCharacters(filePath, context, adapter);
             }
         } catch (Exception e) {
             Toast.makeText(this, "ImageGet ERROR", Toast.LENGTH_LONG)
@@ -184,105 +163,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Resizes a bitmap
-    public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        // Create a matrix for manipulation
-        Matrix matrix = new Matrix();
-        // Resize the bitmap
-        matrix.setRectToRect(new RectF(0, 0, width, height), new RectF(0, 0, newWidth, newHeight), Matrix.ScaleToFit.CENTER);
-        // Return a newly created bitmap
-        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+    @Override
+    public void onCharacterDeleted(ComicCharacter comicCharacter) {
+        remove(comicCharacter, this);
     }
 
-    protected void readCharacters() {//Reads characters array from file
-        try {
-            File f = new File(filePath);
-            FileInputStream fis = new FileInputStream(f);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            characters = (List<character>) in.readObject();
-            in.close();
-        } catch (Exception e) {
-        }
-        adapter.clear();
-        adapter.addAll(characters);
+    @Override
+    public void onCharacterSelected(ComicCharacter comicCharacter) {
+        ComicUtils.startSeriesActivity(comicCharacter.getCharacterName(), context);
     }
 
-    public void buildDefault(View v) {/*
-        characters.clear();
-        System.out.println(characters);
-        character Batman = new character("Batman");
-        character Superman = new character("Superman");
-        character wonderWoman = new character("Wonder Woman");
-        character avengers = new character("Avengers");
-        character justicLeague = new character("Justice League");
-        character spidreman = new character("Spider-Man");
-        character harelyQuinn = new character("Harley Quinn");
-        characters.add(Batman);
-        characters.add(Superman);
-        characters.add(wonderWoman);
-        characters.add(avengers);
-        characters.add(justicLeague);
-        characters.add(spidreman);
-        characters.add(harelyQuinn);
-        saveCharacters(context);
-        adapter.notifyDataSetChanged();
-        System.out.println(characters);*/
-    }
-
-    public void clearData(View v) {
-        File cache = getCacheDir();
-        File appDir = new File(cache.getParent());
-        if (appDir.exists()) {
-            String[] children = appDir.list();
-            for (String s : children) {
-                if (!s.equals("lib")) {
-                    deleteDir(new File(appDir, s));
-                    Log.i("TAG", "**************** File /data/data/APP_PACKAGE/" + s + " DELETED *******************");
-                }
-            }
-        }
-        characters.clear();
-        saveCharacters(filePath, context);
-        adapter.notifyDataSetChanged();
-
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        return dir.delete();
-    }
-
-
-    //This methods below are either not working correctly at the moment or are just for refrence
-    //Deletes the most recent characterview, for testing purposes only.  Not final method
-    //Doesnt currently work, avoid using for now
-    //Method not edited out so remove button can stay.
-    public void removeTextView(View view) {
-        /*LinearLayout linearLayout = (LinearLayout) findViewById(R.id.parentLinear);
-        if (TextViewCount != 0) {
-            LinearLayout toRemove = (LinearLayout) findViewById(TextViewCount - 1);
-            linearLayout.removeView(toRemove);
-            characterNames.remove(TextViewCount - 1);
-            characters.remove(TextViewCount -1);
-            saveCharacters(this);
-            TextViewCount--;
-        }
-    */
-    }
-
-    //Saves our characters to prefrences
-    //In old version, I save via preferences, keeping code for reference if I need it later.
+}
+//Saves our comicCharacters to prefrences
+//In old version, I save via preferences, keeping code for reference if I need it later.
     /*private void saveCharacters(Context context) {
         SharedPreferences myPrefs;
         SharedPreferences.Editor edit;
@@ -292,12 +185,3 @@ public class MainActivity extends AppCompatActivity {
         edit.putString(prefKey, string);
         edit.commit();
     }*/
-
-    private void restartActivity() {
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
-}
-

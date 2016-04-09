@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name="com.example.android.ComicApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,7 +21,11 @@
         </activity>
         <activity android:name="com.example.android.SeriesActivity" />
         <activity android:name=".AddCharacter" />
-        <activity android:name=".IssueActivity"></activity>
+        <activity
+            android:name=".IssueActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Sliding.Light" />
     </application>
 
 </manifest>

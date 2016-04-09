@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +23,6 @@ import android.widget.Toast;
 import com.example.android.mycomics.MainActivity;
 import com.example.android.mycomics.R;
 import com.example.android.mycomics.Series;
-import com.example.android.mycomics.character;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +44,7 @@ public class SeriesActivity extends AppCompatActivity {//Works similaryly to Mai
     public static Series currentSaveSeries;
 
     Context context = this;
-    String nextDisplayName = "";//Used to hold String for new character as input by user
+    String nextDisplayName = "";//Used to hold String for new ComicCharacter as input by user
     int comicHeightInPx;//For dp conversion
 
 
@@ -66,9 +66,15 @@ public class SeriesActivity extends AppCompatActivity {//Works similaryly to Mai
             Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
             Log.d("READ ERROR", e.toString());
         }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }
     }
 
-    //Creates dialoge for adding a character
+    //Creates dialoge for adding a ComicCharacter
     public void seriesDialog(View view) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final EditText txtInput = new EditText(this);
@@ -78,7 +84,7 @@ public class SeriesActivity extends AppCompatActivity {//Works similaryly to Mai
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int firstSize = series.size();
-                nextDisplayName = txtInput.getText().toString();//Gets name of character to add
+                nextDisplayName = txtInput.getText().toString();//Gets name of ComicCharacter to add
                 //Next three lines update variables and saves them.
                 series.add(new Series(nextDisplayName));
                 seriesAdapter.add(series.get(series.size() - 1));
@@ -181,6 +187,16 @@ public class SeriesActivity extends AppCompatActivity {//Works similaryly to Mai
     public void goToMain(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
 

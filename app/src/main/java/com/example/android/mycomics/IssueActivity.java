@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.SeriesActivity;
+import com.klinker.android.sliding.SlidingActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class IssueActivity extends AppCompatActivity {
+public class IssueActivity extends SlidingActivity {
     List<String> stringIssues;
     ArrayList<Double> doubleIssues = new ArrayList<>();
     List<Series> seriesArray = new ArrayList<>();
@@ -37,12 +38,14 @@ public class IssueActivity extends AppCompatActivity {
     ArrayAdapter<String> myAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_issue);
+    public void init(Bundle bundle) {
+        setTitle("Issues");
+        setPrimaryColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorPrimaryDark));
+
+        setContent(R.layout.activity_issue);
         Intent intent = getIntent();
         currentSeries = (Series) intent.getSerializableExtra("currentSeries");
-        currentCharacter = (String) intent.getSerializableExtra("character");
+        currentCharacter = (String) intent.getSerializableExtra("ComicCharacter");
         myListView = (ListView) findViewById(R.id.issueListView);
         readSeries();
         index = -1;
@@ -152,7 +155,7 @@ public class IssueActivity extends AppCompatActivity {
         }
     }
 
-    protected void readSeries() {//Reads characters array from file
+    protected void readSeries() {//Reads comicCharacters array from file
         try {
             String filePath = this.getFilesDir().getPath().toString() + "/" + currentCharacter + ".txt";
             File f = new File(filePath);
@@ -166,7 +169,7 @@ public class IssueActivity extends AppCompatActivity {
 
     public void goBack(View v) {
         Intent intent = new Intent(this, SeriesActivity.class);
-        intent.putExtra("currentCharName", currentCharacter);//So we know what character we are dealing with
+        intent.putExtra("currentCharName", currentCharacter);//So we know what ComicCharacter we are dealing with
         this.startActivity(intent);
     }
 }
