@@ -11,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.mycomics.IssueActivity;
-import com.example.android.mycomics.MainActivity;
 import com.example.android.mycomics.R;
 import com.example.android.mycomics.Series;
-import com.example.android.mycomics.character;
 
 import java.util.List;
 
@@ -79,9 +78,31 @@ public class SeriesAdapter extends ArrayAdapter<Series> {
 
     public void nextActivity(Series mySeries) {
         Intent intent = new Intent(context, IssueActivity.class);
+        intent = addExpansionArgs(intent);
         intent.putExtra("currentSeries", mySeries);
-        intent.putExtra("character", SeriesActivity.currentCharacter);//So we know what character we are dealing with
+        intent.putExtra("ComicCharacter", SeriesActivity.currentCharacter);//So we know what ComicCharacter we are dealing with
         context.startActivity(intent);
+    }
+
+    public static final String ARG_USE_EXPANSION = "arg_use_expansion";
+    public static final String ARG_EXPANSION_LEFT_OFFSET = "arg_left_offset";
+    public static final String ARG_EXPANSION_TOP_OFFSET = "arg_top_offset";
+    public static final String ARG_EXPANSION_VIEW_WIDTH = "arg_view_width";
+    public static final String ARG_EXPANSION_VIEW_HEIGHT = "arg_view_height";
+
+    public Intent addExpansionArgs(Intent intent) {
+        intent.putExtra(ARG_USE_EXPANSION, true);
+
+//        View expansionView = findViewById(R.id.expansion_view);
+//
+//        int location[] = new int[2];
+//        expansionView.getLocationInWindow(location);
+//
+//        intent.putExtra(ARG_EXPANSION_LEFT_OFFSET, location[0]);
+//        intent.putExtra(ARG_EXPANSION_TOP_OFFSET, location[1]);
+//        intent.putExtra(ARG_EXPANSION_VIEW_WIDTH, expansionView.getWidth());
+//        intent.putExtra(ARG_EXPANSION_VIEW_HEIGHT, expansionView.getHeight());
+        return intent;
     }
 
     public int[] getScreenSize() {

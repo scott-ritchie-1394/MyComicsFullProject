@@ -16,13 +16,13 @@ import java.util.List;
 //Currently class just holds name and image for our charcter.
 //Originally the class held an array of Series type, but when
 //I tried to write to file, the Series did not save, so currently
-//I write a seperate Series array to a file named after the character.
-public class character implements Serializable {
+//I write a seperate Series array to a file named after the ComicCharacter.
+public class ComicCharacter implements Serializable {
     private String characterName;
-    private byte[] byteArray = null;//For image associated with character. Bitmap not serializable so must convert from bitmap to byteArray.
+    private byte[] byteArray = null;//For image associated with ComicCharacter. Bitmap not serializable so must convert from bitmap to byteArray.
 
 
-    public character(String name) {
+    public ComicCharacter(String name) {
         characterName = name;
     }
 

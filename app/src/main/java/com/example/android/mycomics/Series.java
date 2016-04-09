@@ -13,7 +13,7 @@ import java.util.Collections;
  */
 public class Series implements Serializable {
     private String seriesName;
-    private byte[] byteArray = null;//For image associated with character. Bitmap not serializable so must convert from bitmap to byteArray.
+    private byte[] byteArray = null;//For image associated with ComicCharacter. Bitmap not serializable so must convert from bitmap to byteArray.
     private ArrayList<Double> issues = new ArrayList<>();
 
 
