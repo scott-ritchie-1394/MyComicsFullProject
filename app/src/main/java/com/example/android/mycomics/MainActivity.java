@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
             Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
             Log.d("READ ERROR", e.toString());
         }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
     }
 
     //Creates dialoge for adding a ComicCharacter
