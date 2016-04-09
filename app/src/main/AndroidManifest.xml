@@ -25,7 +25,7 @@
             android:name=".IssueActivity"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Sliding.Light"></activity>
+            android:theme="@style/Theme.Sliding.Light" />
     </application>
 
 </manifest>
