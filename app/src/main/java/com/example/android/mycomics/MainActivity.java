@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
         }
 
         final Context myContext = fromCallContext;
-        boolean test = false;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(myContext);
         dialogBuilder.setTitle("Are you sure you want to delete?");
         dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
