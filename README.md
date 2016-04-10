@@ -2,7 +2,9 @@
   <br />
 *********  
 ** In this update:  
-** Pictures now scale accross platforms assuming comic book ratio.  
+** PHEW. A lot of work. Changed everything to recycler view.  Ummmmm added a bunch of asthetics.  
+** Added navigation view. Doesnt do anything yet. Remove function works on series. Issues is now a  
+** sliding activity. I think that is it, but I could easily be missing something.
 *********
 
 An in development, for personal use, comic book database for android.
@@ -22,28 +24,20 @@ Clicking a series shows a new screen that displays the issue numbers the user ha
   <br />
   <br />
 Currenlty, it operates like so:
-Everything works in comicCharacter screen. Even added an "Edit" button, incase the user misstyped. Havent added remove/edit functionality for
+Everything works in comicCharacter screen. Even added an "Edit" button, incase the user misstyped. Havent added edit functionality for
 other activities yet.
   <br />
   <br />
   <br />
 Thoughts:  
---After most recent update, wanted to get rid of a chuck of code that was bothering me.  In the 
-MainActivity.java file, in the characterDialog method, I was having an issue where it would sometimes add a duplicated
-comicCharacter so I just said "if you just added two characters, delete the last one".  I removed that code, but with the expence of
-needing to restart the activity everytime I add a comicCharacter. Need to debug original code. Figure out what is going on.--
-  <br />
 Should use a better structure for saving data.  
 Will improve asthetics once it works properly.  
 Add sort function for comicCharacter and series.
 Should clean up code.  Right now it is ductaped together.  
-Currently very "brute forced".  
-Come up with a more astheticaly pleasing way to display issues.  
   <br />
   <br />
   <br />
 Possible future modifications/new apps:  
-Character pic is just a random series pic which would add variety.  
 More information such as publisher.  
 Implement API databases.  
 Output a text file that can be sent to an email so the user can print it and take it with them.  
