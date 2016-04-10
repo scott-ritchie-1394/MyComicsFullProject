@@ -83,6 +83,19 @@ public final class ComicUtils {
         adapter.swap(comicCharacters);
     }
 
+    public static void readSeries(String filePath, SeriesAdapterRecycler adapter) {
+        List<Series> series = null;
+        try {
+            File f = new File(filePath);
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            series = (List<Series>) in.readObject();
+            in.close();
+        } catch (Exception e) {
+        }
+        adapter.swap(series);
+    }
+
     public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();

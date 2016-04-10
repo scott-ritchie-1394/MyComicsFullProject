@@ -42,22 +42,9 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements
         params.width = size.second;
 
         charImage.requestLayout();
-        /*charImage.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {//To set custom image
-                MainActivity.currentUserEdit = charImage;
-                MainActivity.currentSaveComicCharacter = getItem(position);
-                userSetImage();
-            }
-        });*/
         charName.setOnClickListener(this);
         charName.setOnLongClickListener(this);
 
-        /*Bitmap bm = myCharacter.getImage();
-        if (bm != null) {
-            charImage.setImageBitmap(bm);
-        } else {
-            charImage.setImageResource(R.drawable.addimage);
-        }*/
         List<Bitmap> bitmaps = ComicUtils.readSeriesImages(mComicCharacter.getCharacterName());
         Drawable[] images = new Drawable[bitmaps.size()];
         if (images.length != 0) {

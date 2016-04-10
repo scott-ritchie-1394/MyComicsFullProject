@@ -1,8 +1,6 @@
 package com.example.android;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +44,10 @@ public abstract class BaseRecyclerViewAdapter<VH extends RecyclerView.ViewHolder
 
     public List<T> getItems() {
         return items;
+    }
+
+    public T getItem(int position) {
+        return items.get(position);
     }
 
     public void removeItem(T item) {
