@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.android.SeriesActivity" />
-        <activity android:name=".AddCharacter" />
         <activity
             android:name=".IssueActivity"
             android:excludeFromRecents="true"

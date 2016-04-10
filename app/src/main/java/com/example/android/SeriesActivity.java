@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -53,7 +54,7 @@ public class SeriesActivity extends AppCompatActivity {//Works similaryly to Mai
         //Gets height using dp
         comicHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_2);
+        setContentView(R.layout.activity_series);
         Intent i = getIntent();
         currentCharacter = (String) i.getSerializableExtra("currentCharName");
         filePath = this.getFilesDir().getPath().toString() + "/" + currentCharacter + ".txt";
@@ -66,7 +67,8 @@ public class SeriesActivity extends AppCompatActivity {//Works similaryly to Mai
             Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
             Log.d("READ ERROR", e.toString());
         }
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

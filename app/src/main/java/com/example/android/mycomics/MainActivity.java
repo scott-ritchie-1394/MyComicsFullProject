@@ -14,8 +14,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -38,30 +38,24 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
 
     Context context = this;
     String nextDisplayName = "";//Used to hold String for new ComicCharacter as input by user
-    int comicHeightInPx;//For dp conversion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Gets height using dp
-        comicHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
-        filePathPrime = this.getFilesDir().getPath().toString();
-        filePath = filePathPrime + "/saveFile.txt";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        filePathPrime = this.getFilesDir().getPath().toString();
+        filePath = filePathPrime + "/saveFile.txt";
         adapter = new CharacterAdapterRecycler(this);
         listView = (RecyclerView) findViewById(R.id.listView);
         listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(adapter);
-        try {
-            ComicUtils.readCharacters(filePath, adapter);//Should build our array of Characters from file.
-        } catch (Exception e) {
-            Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
-            Log.d("READ ERROR", e.toString());
-        }
+        ComicUtils.readCharacters(filePath, adapter);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_navigation_menu);
         }
     }
 
