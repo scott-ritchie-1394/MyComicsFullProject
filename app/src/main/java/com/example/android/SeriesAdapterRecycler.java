@@ -24,6 +24,11 @@ public class SeriesAdapterRecycler extends BaseRecyclerViewAdapter<SeriesViewHol
         this.mCallback = mCallback;
     }
 
+    public void editSeriesName(Series series, String newName) {
+        series.setSeriesName(newName);
+        notifyItemChanged(items.indexOf(series));
+    }
+
     @Override
     protected int getLayoutResource() {
         return R.layout.character_layout;

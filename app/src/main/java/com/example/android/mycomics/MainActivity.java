@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
         ComicUtils.readCharacters(filePath, adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Characters");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -121,13 +122,20 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
         final Context myContext = fromCallContext;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(myContext);
         final EditText txtInput = new EditText(myContext);
-        dialogBuilder.setTitle("New ComicCharacter Name:");
+        dialogBuilder.setTitle("New Character Name:");
         dialogBuilder.setView(txtInput);
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Next three lines update variables and saves them.
+                File old = new File(filePathPrime + "/" + comicCharacter.getCharacterName() + ".txt");
+                File to = new File(filePathPrime + "/" + txtInput.getText().toString() + ".txt");
+                if (old.exists()) {
+                    old.renameTo(to);
+                }
+                old.delete();
                 comicCharacter.setCharacterName(txtInput.getText().toString());
+                adapter.notifyItemChanged(adapter.getItems().indexOf(comicCharacter));
                 ComicUtils.saveCharacters(filePath, myContext, adapter);
             }
         });

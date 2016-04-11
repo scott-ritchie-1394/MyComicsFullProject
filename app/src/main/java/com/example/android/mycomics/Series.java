@@ -25,6 +25,10 @@ public class Series implements Serializable {
         return seriesName;
     }
 
+    public void setSeriesName(String newName) {
+        seriesName = newName;
+    }
+
     public void addIssue(double issue) {
         issues.add(issue);
     }
