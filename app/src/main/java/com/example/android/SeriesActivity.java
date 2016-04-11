@@ -68,7 +68,6 @@ public class SeriesActivity extends AppCompatActivity implements SeriesAdapterRe
         } catch (Exception e) {
             Log.d("READ ERROR", e.toString());
         }
-
         setUpToolBar();
 
     }
