@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movieRelative"
+    android:layout_width="match_parent"
+    android:layout_height="164dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    android:background="@drawable/wonder_woman">
+
+    <View
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
+
+    <TextView
+        android:id="@+id/movieName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/empty_view"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="10dp"
+        android:text="Test"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+</RelativeLayout>
