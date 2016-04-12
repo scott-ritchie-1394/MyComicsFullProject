@@ -2,12 +2,14 @@ package com.example.android;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.mycomics.MainActivity;
@@ -30,16 +32,31 @@ public class MovieActivity extends AppCompatActivity {
         addMovie(R.drawable.infinity_war, "Avengers: Infinity War");
         addMovie(R.drawable.xmen_apocolypse, "X-Men Apocalypse");
 
-
     }
 
     private void addMovie(int resourceId, String name) {
         View child = getLayoutInflater().inflate(R.layout.movie_layout, activity, false);
+        child.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v instanceof RelativeLayout) {
+                    TextView textName = (TextView) v.findViewById(R.id.movieName);
+                    search(textName.getText().toString());
+                }
+            }
+        });
         Drawable image = getResources().getDrawable(resourceId);
         child.findViewById(R.id.movieRelative).setBackground(image);
         TextView theName = (TextView) child.findViewById(R.id.movieName);
         theName.setText(name);
         activity.addView(child);
+    }
+
+    public void search(String searcher) {
+        searcher = searcher.replace(' ', '+');
+        Uri uri = Uri.parse("https://www.google.com/#q=" + searcher + "&tbm=nws"); // missing 'http://' will cause crashed
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     private void setupToolBar() {
