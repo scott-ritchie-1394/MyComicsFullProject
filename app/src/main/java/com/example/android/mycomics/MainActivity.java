@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
         listView = (RecyclerView) findViewById(R.id.listView);
         listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(adapter);
+        float scale = getResources().getDisplayMetrics().density;
+        int dpAsPixels = (int) (16 * scale + 0.5f);
         ComicUtils.readCharacters(filePath, adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

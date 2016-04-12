@@ -56,6 +56,12 @@ public class IssueActivity extends SlidingActivity {
         combineIssueRuns(doubleIssues);
         myAdapter = new ArrayAdapter<>(this, R.layout.issues_layout, stringIssues);
         myListView.setAdapter(myAdapter);
+        /*myListView = (ListView) findViewById(R.id.issueListView);
+        doubleIssues = currentSeries.getIssueArray();
+        combineIssueRuns(doubleIssues);
+        myAdapter = new ArrayAdapter<>(this, R.layout.issues_layout, stringIssues);
+        myListView.setAdapter(myAdapter);
+        System.out.println(stringIssues);*/
     }
 
     private void combineIssueRuns(ArrayList<Double> list) {

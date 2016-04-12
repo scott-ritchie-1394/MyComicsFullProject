@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:clipToPadding="false"
+    android:orientation="horizontal"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="20dp"
-        android:layout_height="120dp"
-        android:src="@drawable/addimage"
-        android:background="#BDBDBD" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="8"
-        android:text="Character"
-        android:gravity="center_vertical"
-        android:paddingLeft="12dp"
-        android:textSize="20sp"
-        android:textColor="@color/dark_background" />
-
-</LinearLayout>
-
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/dark_background"
-        android:layout_below="@id/linearLayout" />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/light_background"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="20dp"
+            android:layout_height="120dp"
+            android:background="#BDBDBD"
+            android:src="@drawable/addimage" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="8"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:paddingLeft="12dp"
+            android:text="Character"
+            android:textColor="@color/dark_background"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+</LinearLayout>
