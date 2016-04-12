@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.SeriesActivity;
@@ -32,8 +35,6 @@ public class IssueActivity extends SlidingActivity {
     Series currentSeries;
     int index;
     String currentCharacter = "";
-    ListView myListView;
-    ArrayAdapter<String> myAdapter;
 
     @Override
     public void init(Bundle bundle) {
@@ -44,7 +45,6 @@ public class IssueActivity extends SlidingActivity {
         Intent intent = getIntent();
         currentSeries = (Series) intent.getSerializableExtra("currentSeries");
         currentCharacter = (String) intent.getSerializableExtra("ComicCharacter");
-        myListView = (ListView) findViewById(R.id.issueListView);
         readSeries();
         index = -1;
         for (int i = 0; i < seriesArray.size(); i++) {
@@ -54,8 +54,7 @@ public class IssueActivity extends SlidingActivity {
         }
         doubleIssues = seriesArray.get(index).getIssueArray();
         combineIssueRuns(doubleIssues);
-        myAdapter = new ArrayAdapter<>(this, R.layout.issues_layout, stringIssues);
-        myListView.setAdapter(myAdapter);
+        displayIssues();
         /*myListView = (ListView) findViewById(R.id.issueListView);
         doubleIssues = currentSeries.getIssueArray();
         combineIssueRuns(doubleIssues);
@@ -88,10 +87,6 @@ public class IssueActivity extends SlidingActivity {
                 toReturn.add("" + list.get(i));
         }
         stringIssues = toReturn;
-        try {
-            myAdapter.notifyDataSetChanged();
-        } catch (Exception e) {
-        }
         System.out.println(stringIssues);
     }
 
@@ -122,12 +117,18 @@ public class IssueActivity extends SlidingActivity {
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myAdapter.clear();
+                        //For removing duplicates
+                        Object[] st = doubleIssues.toArray();
+                        for (Object s : st) {
+                            if (doubleIssues.indexOf(s) != doubleIssues.lastIndexOf(s)) {
+                                doubleIssues.remove(doubleIssues.lastIndexOf(s));
+                            }
+                        }
+                        //end dup removal
                         Collections.sort(doubleIssues);
                         combineIssueRuns(doubleIssues);
-                        myAdapter.addAll(stringIssues);
                         saveIssues();
-                        myAdapter.notifyDataSetChanged();
+                        displayIssues();
                         dialogCharacterName.dismiss();
                     }
                 });
@@ -169,5 +170,24 @@ public class IssueActivity extends SlidingActivity {
         Intent intent = new Intent(this, SeriesActivity.class);
         intent.putExtra("currentCharName", currentCharacter);//So we know what ComicCharacter we are dealing with
         this.startActivity(intent);
+    }
+
+    public void displayIssues() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        linearLayout.removeAllViews();
+
+        for (int i = 0; i < stringIssues.size(); i++) {
+            TextView textView = new TextView(this);
+            textView.setText(stringIssues.get(i));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28);
+            textView.setGravity(Gravity.CENTER);
+            linearLayout.addView(textView);
+            View v = new View(this);
+            v.setBackgroundResource(R.color.dark_background);
+            v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics())));
+            linearLayout.addView(v);
+
+
+        }
     }
 }

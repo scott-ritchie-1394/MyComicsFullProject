@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.MovieDetails">
+    tools:context="com.example.android.MovieDetails"
+    android:clipToPadding="false">
 
     <ImageView
         android:id="@+id/image_view"
@@ -25,14 +26,16 @@
         android:text="Test"
         android:textColor="#000000"
         android:textSize="24sp"
-        android:transitionName="title" />
+        android:transitionName="title"
+        android:elevation="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
         android:layout_below="@id/movieName"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clipToPadding="false">
 
         <TextView
             android:id="@+id/summary"
@@ -45,7 +48,8 @@
             android:textSize="16sp"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            android:elevation="8dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -59,7 +63,8 @@
                 android:textSize="20sp"
                 android:textColor="#000000"
                 android:text="12/29/1994"
-                android:gravity="center|bottom" />
+                android:gravity="center|bottom"
+                android:id="@+id/date" />
         </RelativeLayout>
     </LinearLayout>
 

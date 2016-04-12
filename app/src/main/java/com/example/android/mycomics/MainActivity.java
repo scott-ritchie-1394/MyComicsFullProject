@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
 
     public void setupNavigationView() {
         NavigationView navView = (NavigationView) findViewById(R.id.navigation_view);
-        navView.inflateMenu(R.menu.drawer);
+        //navView.inflateMenu(R.menu.drawer);
         MenuItem movies = navView.getMenu().findItem(R.id.movies);
         movies.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

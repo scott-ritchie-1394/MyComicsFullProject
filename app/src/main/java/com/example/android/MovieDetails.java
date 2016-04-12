@@ -21,6 +21,7 @@ public class MovieDetails extends AppCompatActivity {
     String currentMovie;
     String url;
     String summary;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class MovieDetails extends AppCompatActivity {
         textView.setText(currentMovie);
         textView = (TextView) findViewById(R.id.summary);
         textView.setText(summary);
+        textView = (TextView) findViewById(R.id.date);
+        textView.setText(date);
     }
 
     public void findImage(int tag) {
@@ -44,42 +47,49 @@ public class MovieDetails extends AppCompatActivity {
                 currentMovie = "Batman V Superman";
                 summary = "Fearing that the actions of Superman are left unchecked, Batman takes on the Man of Steel, while the world wrestles with what kind of a hero it really needs.";
                 url = "http://www.fandango.com/batmanvsuperman:dawnofjustice_169807/movietimes";
+                date = "March 25, 2016";
                 break;
             case 2:
                 image = getResources().getDrawable(R.drawable.civil_war);
                 currentMovie = "Captain America Civil War";
                 summary = "Political interference in the Avengers' activities causes a rift between former allies Captain America and Iron Man.";
                 url = "http://www.fandango.com/captainamerica:civilwar_185792/movietimes";
+                date = "May 6, 2016";
                 break;
             case 3:
                 image = getResources().getDrawable(R.drawable.dr_strange);
                 currentMovie = "Dr Strange";
                 summary = "After his career is destroyed, a brilliant but arrogant and conceited surgeon gets a new lease on life when a sorcerer takes him under his wing and trains him to defend the world against evil.";
                 url = "http://www.fandango.com/doctorstrange_186645/movietimes";
+                date = "November 4, 2016";
                 break;
             case 4:
                 image = getResources().getDrawable(R.drawable.wonder_woman_movie);
                 currentMovie = "Wonder Woman Movie";
                 summary = "An Amazon princess leaves her island home to explore the world, and becomes the greatest of its female heroes.";
                 url = "http://www.fandango.com/wonderwoman_191725/movieoverview";
+                date = "June 2, 2017";
                 break;
             case 5:
                 image = getResources().getDrawable(R.drawable.suicide_squad);
                 currentMovie = "Suicide Squad";
                 summary = "A secret government agency recruits imprisoned supervillains to execute dangerous black ops missions in exchange for clemency.";
                 url = "http://www.fandango.com/suicidesquad_179885/movietimes";
+                date = "August 5, 2016";
                 break;
             case 6:
                 image = getResources().getDrawable(R.drawable.infinity_war);
                 currentMovie = "Avengers Infinity War";
                 summary = "The Universe's mightest heroes must unite to fight a foe unlike any of them have seen before";
                 url = "NA";
+                date = "May 4, 2018";
                 break;
             case 7:
                 image = getResources().getDrawable(R.drawable.xmen_apocolypse);
                 currentMovie = "X-Men Apocolypse";
                 summary = "With the emergence of the world's first mutant, Apocalypse, the X-Men must unite to defeat his extinction level plan.";
                 url = "http://www.fandango.com/xmen:apocalypse_175470/movietimes";
+                date = "May 27, 2016";
                 break;
 
         }

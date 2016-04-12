@@ -17,7 +17,8 @@
             tools:context="com.example.android.MovieActivity"
             android:id="@+id/activityParent"
             android:orientation="vertical"
-            android:paddingBottom="16dp"></LinearLayout>
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"></LinearLayout>
 
     </ScrollView>
 
