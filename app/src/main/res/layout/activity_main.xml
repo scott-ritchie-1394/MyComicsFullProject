@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
     tools:context="com.example.android.mycomics.MainActivity">
 
@@ -14,31 +14,35 @@
         android:layout_height="match_parent">
 
         <include layout="@layout/toolbar" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize">
 
 
-        <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-            android:id="@+id/listView" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="16dp"
+                android:clipToPadding="false" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:onClick="characterDialog"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_content_add" />
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:onClick="characterDialog"
+                android:src="@drawable/ic_content_add" />
         </RelativeLayout>
     </FrameLayout>
+
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_height="match_parent"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
         app:menu="@menu/drawer" />

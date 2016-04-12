@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -44,7 +45,6 @@ public class SeriesActivity extends AppCompatActivity implements SeriesAdapterRe
     RecyclerView listView;
     public static ImageView currentUserEdit;
     public static Series currentSaveSeries;
-    Series mSeries;
 
     Context context = this;
     String nextDisplayName = "";//Used to hold String for new ComicCharacter as input by user
@@ -66,10 +66,8 @@ public class SeriesActivity extends AppCompatActivity implements SeriesAdapterRe
         try {
             ComicUtils.readSeries(filePath, seriesAdapter);
         } catch (Exception e) {
-            Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
             Log.d("READ ERROR", e.toString());
         }
-
         setUpToolBar();
 
     }
@@ -150,7 +148,7 @@ public class SeriesActivity extends AppCompatActivity implements SeriesAdapterRe
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
     }
 
-    public void goToMain(View v) {
+    public void goToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -158,11 +156,9 @@ public class SeriesActivity extends AppCompatActivity implements SeriesAdapterRe
     public void setUpToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        }
+        getSupportActionBar().setTitle("My " + currentCharacter + " Series");
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public static void remove(final Series series, final Context fromCallContext) {
@@ -193,12 +189,29 @@ public class SeriesActivity extends AppCompatActivity implements SeriesAdapterRe
                 return;
             }
         });
-//        dialogBuilder.setNeutralButton("Edit", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                editName(comicCharacter, myContext);
-//            }
-//        });
+        dialogBuilder.setNeutralButton("Edit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editName(series, myContext);
+            }
+        });
+        AlertDialog dialogCharacterName = dialogBuilder.create();
+        dialogCharacterName.show();
+    }
+
+    public static void editName(final Series series, final Context context) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        final EditText txtInput = new EditText(context);
+        dialogBuilder.setTitle("New Series Name:");
+        dialogBuilder.setView(txtInput);
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Next three lines update variables and saves them.
+                seriesAdapter.editSeriesName(series, txtInput.getText().toString());
+                saveSeries(context);
+            }
+        });
         AlertDialog dialogCharacterName = dialogBuilder.create();
         dialogCharacterName.show();
     }
@@ -229,12 +242,23 @@ public class SeriesActivity extends AppCompatActivity implements SeriesAdapterRe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
+            goToMain();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            goToMain();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 }
 

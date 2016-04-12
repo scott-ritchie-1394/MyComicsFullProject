@@ -3,16 +3,17 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/inbox"
-            android:checked="false"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Manage" />
+            android:id="@+id/comics"
+            android:checked="true"
+            android:icon="@drawable/ic_av_my_library_books"
+            android:title="Comic Books" />
+        <!--android:onClick="Navigation"-->
 
         <item
-            android:id="@+id/starred"
+            android:id="@+id/movies"
             android:checked="false"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Menu" />
+            android:icon="@drawable/ic_maps_local_movies"
+            android:title="Movies" />
 
     </group>
 </menu>

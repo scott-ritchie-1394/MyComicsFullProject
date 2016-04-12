@@ -47,15 +47,16 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder implements
 
         List<Bitmap> bitmaps = ComicUtils.readSeriesImages(mComicCharacter.getCharacterName());
         Drawable[] images = new Drawable[bitmaps.size()];
-        if (images.length != 0) {
+
+        if (bitmaps.size() == 1) {
+            charImage.setImageBitmap(bitmaps.get(0));
+        } else if (images.length != 0) {
             for (int i = 0; i < bitmaps.size(); i++) {
                 images[i] = new BitmapDrawable(bitmaps.get(i));
             }
             CyclicTransitionDrawable transitionDrawable = new CyclicTransitionDrawable(images);
             charImage.setImageDrawable(transitionDrawable);
             transitionDrawable.startTransition(2000, 5000);
-        } else if (images.length == 1) {
-            charImage.setImageBitmap(bitmaps.get(0));
         } else {
             charImage.setImageResource(R.drawable.addimage);
         }

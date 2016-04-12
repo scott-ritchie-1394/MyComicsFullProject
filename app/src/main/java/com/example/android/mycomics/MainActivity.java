@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.android.CharacterAdapterRecycler;
 import com.example.android.ComicUtils;
+import com.example.android.MovieActivity;
 
 import java.io.File;
 import java.io.InputStream;
@@ -49,14 +51,18 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
         listView = (RecyclerView) findViewById(R.id.listView);
         listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(adapter);
+        float scale = getResources().getDisplayMetrics().density;
+        int dpAsPixels = (int) (16 * scale + 0.5f);
         ComicUtils.readCharacters(filePath, adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Characters");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_navigation_menu);
         }
+        setupNavigationView();
     }
 
     //Creates dialoge for adding a ComicCharacter
@@ -121,13 +127,20 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
         final Context myContext = fromCallContext;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(myContext);
         final EditText txtInput = new EditText(myContext);
-        dialogBuilder.setTitle("New ComicCharacter Name:");
+        dialogBuilder.setTitle("New Character Name:");
         dialogBuilder.setView(txtInput);
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Next three lines update variables and saves them.
+                File old = new File(filePathPrime + "/" + comicCharacter.getCharacterName() + ".txt");
+                File to = new File(filePathPrime + "/" + txtInput.getText().toString() + ".txt");
+                if (old.exists()) {
+                    old.renameTo(to);
+                }
+                old.delete();
                 comicCharacter.setCharacterName(txtInput.getText().toString());
+                adapter.notifyItemChanged(adapter.getItems().indexOf(comicCharacter));
                 ComicUtils.saveCharacters(filePath, myContext, adapter);
             }
         });
@@ -178,6 +191,25 @@ public class MainActivity extends AppCompatActivity implements CharacterAdapterR
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setupNavigationView() {
+        NavigationView navView = (NavigationView) findViewById(R.id.navigation_view);
+        //navView.inflateMenu(R.menu.drawer);
+        MenuItem movies = navView.getMenu().findItem(R.id.movies);
+        movies.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                navigate();
+                return true;
+            }
+        });
+
+    }
+
+    public void navigate() {
+        Intent intent = new Intent(context, MovieActivity.class);
+        context.startActivity(intent);
     }
 
 }
